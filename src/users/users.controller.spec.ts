@@ -16,6 +16,10 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 
 import * as mongoose from 'mongoose';
 
+import { INestApplication } from '@nestjs/common';
+
+import * as request from 'supertest';
+
 
 describe('UsersController', () => {
   let controller: UsersController;
@@ -25,6 +29,7 @@ describe('UsersController', () => {
   let mongod: MongoMemoryServer;
   let mongoConnection: Connection;
   let UserModel: Model<User>;
+  let app : INestApplication ;
 
   /*
   beforeEach(async () => {
@@ -43,15 +48,18 @@ describe('UsersController', () => {
     const uri = mongod.getUri();
     mongoConnection = (await connect(uri)).connection;
     UserModel = mongoConnection.model(User.name, UserSchema);
-    const app: TestingModule = await Test.createTestingModule({
+    const myapp: TestingModule = await Test.createTestingModule({
       controllers: [UsersController],
       providers: [
         UsersService,
         {provide: getModelToken(User.name), useValue: UserModel},
       ],
     }).compile();
-    controller = app.get<UsersController>(UsersController);
-    service = app.get<UsersService>(UsersService);
+    app = await myapp.createNestApplication();
+    await app.init();
+
+    controller = myapp.get<UsersController>(UsersController);
+    service = myapp.get<UsersService>(UsersService);
   });
 
 
@@ -64,6 +72,20 @@ describe('UsersController', () => {
     expect(controller).toBeDefined();
   });
 
+
+
+  it(`/GET users`, () => {
+    return request(app.getHttpServer())
+      .get('/api/users')
+      .expect(200)
+  });
+
+
+  it(`/POST users`, () => {
+    return request(app.getHttpServer())
+      .post('/api/users')
+      .expect(201)
+  });
 
 
 

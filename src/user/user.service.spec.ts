@@ -13,10 +13,15 @@ import { getModelToken } from "@nestjs/mongoose";
 import { MongooseModuleOptions } from '@nestjs/mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 
+import { INestApplication } from '@nestjs/common';
+
 
 
 import * as mongoose from 'mongoose';
 
+
+
+import * as request from 'supertest';
 
 
 
@@ -28,6 +33,7 @@ describe('UserService', () => {
   let mongod: MongoMemoryServer;
   let mongoConnection: Connection;
   let UserModel: Model<User>;
+  let app : INestApplication ;
 
   /*
   beforeEach(async () => {
@@ -60,15 +66,18 @@ describe('UserService', () => {
     const uri = mongod.getUri();
     mongoConnection = (await connect(uri)).connection;
     UserModel = mongoConnection.model(User.name, UserSchema);
-    const app: TestingModule = await Test.createTestingModule({
+    const myapp: TestingModule = await Test.createTestingModule({
       controllers: [UserController],
       providers: [
         UserService,
         {provide: getModelToken(User.name), useValue: UserModel},
       ],
     }).compile();
-    //controller = app.get<UserController>(UserController);
-    service = app.get<UserService>(UserService);
+    app = myapp.createNestApplication();
+    await app.init();
+
+    controller = myapp.get<UserController>(UserController);
+    service = myapp.get<UserService>(UserService);
   });
 
 
@@ -83,6 +92,13 @@ describe('UserService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
+
+
+
+  
+
+
+
 
 
 });
