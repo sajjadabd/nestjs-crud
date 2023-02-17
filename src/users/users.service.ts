@@ -14,11 +14,13 @@ export class UsersService {
 
   async create(createUserDto: CreateUserDto) {
     //return 'This action adds a new user';
-    let randomAvatar = Math.floor(Math.random() * 13 + 1) // creart random number between 1 and 12
+    //return await this.UserModel.deleteMany({});
+    // const randomAvatar = Math.floor(Math.random() * 13 + 1) // creart random number between 1 and 12
+    const id = await this.UserModel.count({}) + 1 ;
 
     const createdUser = new this.UserModel(createUserDto);
-
-    createdUser.avatar = `https://reqres.in/img/faces/${randomAvatar}-image.jpg`
+    createdUser.avatar = `https://reqres.in/img/faces/${id}-image.jpg`
+    createdUser.id = id;
 
     return createdUser.save();
   }
