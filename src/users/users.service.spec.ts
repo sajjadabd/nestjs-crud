@@ -13,6 +13,8 @@ import { getModelToken } from "@nestjs/mongoose";
 import { MongooseModuleOptions } from '@nestjs/mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 
+import * as mongoose from 'mongoose';
+
 
 describe('UsersService', () => {
   let controller: UsersController;
@@ -34,6 +36,7 @@ describe('UsersService', () => {
   */
 
   beforeAll(async () => {
+    mongoose.set("strictQuery", true);
     mongod = await MongoMemoryServer.create();
     const uri = mongod.getUri();
     mongoConnection = (await connect(uri)).connection;
@@ -49,7 +52,15 @@ describe('UsersService', () => {
     service = app.get<UsersService>(UsersService);
   });
 
+
+  afterAll(async () => {
+    if (mongod) await mongod.stop();
+  });
+
+
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
+
+
 });
