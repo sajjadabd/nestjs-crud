@@ -20,7 +20,7 @@ $ npm install
 
 ## Start Mongo db
 
-* make sure to create C:\data\db folder 
+* make sure to create <span style="color:'red'">C:\data\db</span> folder 
 * go to the mongodb directory of your computer and run the mongod.exe
 
 ```bash
