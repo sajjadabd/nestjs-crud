@@ -4,8 +4,10 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { UserModule } from './user/user.module';
 
+import { MongooseModule } from '@nestjs/mongoose';
+
 @Module({
-  imports: [UsersModule, UserModule],
+  imports: [MongooseModule.forRoot('mongodb://localhost/nest') , UsersModule, UserModule],
   controllers: [AppController],
   providers: [AppService],
 })
