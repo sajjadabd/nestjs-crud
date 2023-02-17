@@ -6,7 +6,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from '../schemas/user.schema';
 
-import { HttpService  } from '@nestjs/axios';
+//import { HttpService  } from '@nestjs/axios';
 
 import { AxiosResponse } from 'axios';
 
@@ -18,8 +18,8 @@ export class UserService {
 
   constructor(
     @InjectModel(User.name) 
-    private UserModel: Model<UserDocument> ,
-    private readonly httpService: HttpService
+    private UserModel: Model<UserDocument>  // ,
+    // private readonly httpService: HttpService
     ) {}
 
   // create(createUserDto: CreateUserDto) {
