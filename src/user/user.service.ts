@@ -5,7 +5,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { User, UserDocument } from './schemas/user.schema';
+import { User, UserDocument } from '../schemas/user.schema';
 
 
 
